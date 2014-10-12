@@ -57,7 +57,7 @@ def main():
 					print ("-" * 77)
 					comment.print_comment()
 					
-		# Post Yak (Not Working Yet)
+		# Post Yak
 		elif choice == 'P' or choice == 'p':
 			message = input("Enter message to yak: \n")
 			handle = input("Add handle: (Blank to omit): \n")
