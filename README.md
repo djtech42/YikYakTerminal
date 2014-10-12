@@ -9,7 +9,7 @@ Python implementation of Yik Yak using the pyak API by joseph346. It reads and p
 - Click Download ZIP
 - Install Python 3 (latest version is 3.4.0): http://www.python.org/downloads/
 - Open Terminal
-- Install Requests ```python3.4 -m pip install SomePackage```
+- Install Requests ```python3.4 -m pip install requests```
 
 Commands below are used for running the app:
 - Type this command: ```cd ./Downloads/YikYakTerminal-master```
