@@ -3,6 +3,28 @@ Yik Yak Command Line Version
 
 Python implementation of Yik Yak using the pyak API by joseph346. Reading yaks works, but posting doesn't work yet.
 
+--------------------------------------------------------------------------------------
+## Getting Started Guide for Users on OS X and Linux (you can skip this if you are experienced with Python and the Terminal):
+
+- Click Download ZIP
+
+- Install Python 3 (latest version is 3.4.0): http://www.python.org/downloads/
+- Open Terminal
+- Type this command: ```cd ./Downloads/YikYakTerminal-master```
+- Hit enter and then type ```python3 YikYak.py```
+
+You should get text that looks like this:
+
+    Yik Yak Command Line Edition : Created by djtech42
+    
+    
+    Note: This app is currently only for viewing yaks at any location. There is no ability to post, vote, or delete.
+
+
+--------------------------------------------------------------------------------------
+
+## Instructions
+
 It allows you to enter the name of a college or university.
 
 ```Enter college name or address: Capital University ```
@@ -36,6 +58,9 @@ Yak example:
     
     		Posted  2014-10-12 01:15:36
     		
+## API and Licensing
+
+This app is licensed under the GPL license.
 
 This software utilizes PyGeoCoder to convert addresses to coordinates (licensed under BSD): http://code.xster.net/pygeocoder/wiki/Home
 
