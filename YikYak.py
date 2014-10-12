@@ -5,7 +5,7 @@ import requests
 
 def main():
 	print("\nYik Yak Command Line Edition : Created by djtech42\n\n")
-	print("Note: This app is currently only for viewing yaks at any location. There is no ability to post, vote, or delete.\n\n")
+	print("Note: This app is currently only for viewing and posting yaks at any location. There is no ability to vote or delete yet.\n\n")
 	
 	geocoder = pygeocoder.Geocoder("AIzaSyAGeW6l17ATMZiNTRExwvfa2iuPA1DvJqM")
 	
@@ -59,7 +59,6 @@ def main():
 					
 		# Post Yak (Not Working Yet)
 		elif choice == 'P' or choice == 'p':
-			print("Note: This feature does not work yet.\n")
 			message = input("Enter message to yak: \n")
 			handle = input("Add handle: (Blank to omit): \n")
 			showlocation = input("Show location? (Y/N)")
@@ -75,7 +74,7 @@ def main():
 				posted = remoteyakker.post_yak(message, showloc=allowlocation, handle=handle)
 				
 			if posted:
-				print("\nYak successful :)\n")
+				print("\nYak successful :)\n\n")
 			else:
 				print("\nYak failed :(\t", end='')
 				print (posted.status_code, end='')
