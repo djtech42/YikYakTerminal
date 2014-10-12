@@ -68,7 +68,7 @@ Viewing a Yak:
     		
 ## API and Licensing
 
-This app is licensed under the GPL license.
+This app is licensed under the GPL license. Feel free to contribute to it.
 
 This software utilizes PyGeoCoder to convert addresses to coordinates (licensed under BSD): http://code.xster.net/pygeocoder/wiki/Home
 
