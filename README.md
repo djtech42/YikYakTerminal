@@ -22,6 +22,7 @@ You should get text that looks like this:
     
     Note: This app is currently only for viewing and posting yaks at any location. There is no ability to vote or delete yet.
 
+If you are having trouble getting it to run, let me know in Issues.
 
 --------------------------------------------------------------------------------------
 
