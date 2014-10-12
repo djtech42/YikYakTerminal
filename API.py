@@ -200,6 +200,24 @@ class Yakker:
 		hash = base64.b64encode(h.digest())
 
 		return hash, salt
+		
+	def sign_request2(self, page, params):
+		key = "35FD04E8-B7B1-45C4-9886-94A75F4A2BB4"
+	
+		#The salt is just the current time in seconds since epoch
+		salt = str(int(time.time()))
+	
+		#The message to be signed is essentially the request, with parameters sorted
+		msg = "/api/" + page
+	
+		#the salt is just appended directly
+		msg += salt
+	
+		#Calculate the signature
+		h = hmac.new(key.encode(), msg.encode(), sha1)
+		hash = base64.b64encode(h.digest())
+		
+		return hash, salt
 
 
 	def get(self, page, params):
@@ -218,7 +236,7 @@ class Yakker:
 	def post(self, page, params):
 		url = self.base_url + page
 
-		hash, salt = self.sign_request(page, params)
+		hash, salt = self.sign_request2(page, params)
 		getparams = {'hash': hash, 'salt': salt}
 
 		headers = {
