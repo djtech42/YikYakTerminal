@@ -1,7 +1,7 @@
 Yik Yak Command Line Version
 ==============
 
-Python implementation of Yik Yak using the pyak API by joseph346. Reading yaks works, but posting doesn't work yet.
+Python implementation of Yik Yak using the pyak API by joseph346. It reads and posts yaks. More features to come in the future.
 
 --------------------------------------------------------------------------------------
 ## Getting Started Guide for Users on OS X and Linux (you can skip this if you are experienced with Python and the Terminal):
@@ -37,10 +37,16 @@ You can change this location at any time and see yaks from different colleges.
 
 ```Read(R), Post(P), Choose New Location(L), or Quit(Q) -> L```
 
-As you can see, there is an option for posting, but right now it returns a 401 Unauthorized error.
+You can specify a handle for a post and choose whether to show location:
+
+    Enter message to yak: 
+    Good morning!
+    Add handle: (Blank to omit): 
+    Friendly Yakker
+    Show location? (Y/N)Y
 
 
-Yak example:
+Viewing a Yak:
 
     _____________________________________________________________________________________________
     
