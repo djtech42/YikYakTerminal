@@ -4,7 +4,7 @@ Yik Yak Command Line Version
 Python implementation of Yik Yak using the pyak API by joseph346. It reads and posts yaks. More features to come in the future.
 
 --------------------------------------------------------------------------------------
-## Getting Started Guide for Users on OS X and Linux (you can skip this if you are experienced with Python and the Terminal):
+## Getting Started Guide for Users on OS X and Linux
 
 - Click Download ZIP
 - Install Python 3 (latest version is 3.4.0): http://www.python.org/downloads/
