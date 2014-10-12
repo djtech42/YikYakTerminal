@@ -37,6 +37,8 @@ Yak example:
     		Posted  2014-10-12 01:15:36
     		
 
+This software utilizes PyGeoCoder to convert addresses to coordinates (licensed under BSD): http://code.xster.net/pygeocoder/wiki/Home
+
 API url was http://github.com/joseph346/pyak/, but the repo seems to be deleted now.
 
 Radiati0n has a version of it at http://github.com/Radiati0n/pyak. 
