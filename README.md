@@ -18,7 +18,7 @@ You should get text that looks like this:
     Yik Yak Command Line Edition : Created by djtech42
     
     
-    Note: This app is currently only for viewing yaks at any location. There is no ability to post, vote, or delete.
+    Note: This app is currently only for viewing and posting yaks at any location. There is no ability to vote or delete yet.
 
 
 --------------------------------------------------------------------------------------
