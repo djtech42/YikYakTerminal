@@ -7,7 +7,6 @@ Python implementation of Yik Yak using the pyak API by joseph346. It reads and p
 ## Getting Started Guide for Users on OS X and Linux (you can skip this if you are experienced with Python and the Terminal):
 
 - Click Download ZIP
-
 - Install Python 3 (latest version is 3.4.0): http://www.python.org/downloads/
 - Install Requests (using pip): http://docs.python-requests.org/en/latest/user/install/#install
 - Open Terminal
