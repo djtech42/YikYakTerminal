@@ -85,10 +85,10 @@ def main():
 				voteYakNum = int(input("Enter yak number to upvote (displayed above each one): "))
 				
 			if len(yaklist) > 0:
-				upvoted = remoteyakker.upvote_yak(yaklist[voteYakNum].message_id)
+				upvoted = remoteyakker.upvote_yak(yaklist[voteYakNum-1].message_id)
 			else:
 				yaklist = remoteyakker.get_yaks()
-				upvoted = remoteyakker.upvote_yak(yaklist[voteYakNum].message_id)
+				upvoted = remoteyakker.upvote_yak(yaklist[voteYakNum-1].message_id)
 				
 			if upvoted:
 				print("\nUpvote successful :)\n\n")
