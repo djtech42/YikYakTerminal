@@ -1,7 +1,7 @@
-Yik Yak Command Line Version
+Yik Yak Command Line Version (BETA)
 ==============
 
-Python implementation of Yik Yak using the pyak API by joseph346. It reads and posts yaks. More features to come in the future.
+Python implementation of Yik Yak using the pyak API by joseph346. It reads and posts yaks. Beta version adds upvoting and downvoting for yaks.
 
 --------------------------------------------------------------------------------------
 ## Getting Started Guide for Users on OS X and Linux
@@ -38,7 +38,7 @@ The app will save this location as default, so you don't have to enter it each t
 
 You can change this location at any time and see yaks from different colleges.
 
-```Read(R), Post(P), Choose New Location(L), or Quit(Q) -> L```
+```Read(R), Post(P), Upvote(U), Downvote(D), Choose New Location(L), or Quit(Q) -> L```
 
 You can specify a handle for a post and choose whether to show location:
 
@@ -47,6 +47,17 @@ You can specify a handle for a post and choose whether to show location:
     Add handle: (Blank to omit): 
     Friendly Yakker
     Show location? (Y/N)Y
+    
+You can send parameters with an action choice (except read and quit):
+
+```P Live music will be at the fountains at 6.```
+
+```L Ohio State University```
+
+Upvoting takes the yak number as a parameter:
+
+```U 23``` 
+(Upvotes 23rd yak on the reading list)
 
 
 Viewing a Yak:
