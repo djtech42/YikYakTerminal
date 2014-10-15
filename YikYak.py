@@ -7,6 +7,7 @@ def main():
 	print("\nYik Yak Command Line Edition : Created by djtech42\n\n")
 	print("Note: This app is currently only for viewing and posting yaks at any location. There is no ability to vote or delete yet.\n\n")
 	
+	registernewuser = False
 	geocoder = pygeocoder.Geocoder("AIzaSyAGeW6l17ATMZiNTRExwvfa2iuPA1DvJqM")
 	
 	try:
@@ -23,6 +24,7 @@ def main():
 		f.close()
 		
 	except:
+		# If first time using app, ask for preferred location
 		coordlocation = newLocation(geocoder)
 		# If location retrieval fails, ask user for coordinates
 		if coordlocation == 0:
@@ -30,36 +32,30 @@ def main():
 			currentlatitude = input("Latitude: ")
 			currentlongitude = input("Longitude: ")
 			coordlocation = pk.Location(currentlatitude, currentlongitude)
+		
+		# create new user	
+		registernewuser = True
 	
 	print()
 	
 	# start API and get list of yaks
-	remoteyakker = pk.Yakker(None, coordlocation, False)
-	yaklist = remoteyakker.get_yaks()
+	remoteyakker = pk.Yakker(None, coordlocation, registernewuser)
 	
 	while True:
-		choice = input("Read(R), Post(P), Choose New Location(L), or Quit(Q) -> ")
+		choice = input("Read(R), Post(P), Upvote(U), Downvote(D), Choose New Location(L), or Quit(Q) -> ")
 		# Read Yaks
 		if choice == 'R' or choice == 'r':
-			for yak in yaklist:
-				# line between yaks
-				print ("_" * 93)
-				yak.print_yak()
+			yaklist = remoteyakker.get_yaks()
+			read(yaklist)
 				
-				# comments header
-				comments = yak.get_comments()
-				print ("\n\t\tComments:", end='')
-				print (len(comments))
-				
-				# print all comments separated by dashes
-				for comment in comments:
-					print ("\t\t", end='')
-					print ("-" * 77)
-					comment.print_comment()
-					
 		# Post Yak
-		elif choice == 'P' or choice == 'p':
-			message = input("Enter message to yak: \n")
+		elif choice[0] == 'P' or choice[0] == 'p':
+			# set message from parameter or input
+			if len(choice) > 2:
+				message = choice[2:]
+			else:
+				message = input("Enter message to yak: \n")
+				
 			handle = input("Add handle: (Blank to omit): \n")
 			showlocation = input("Show location? (Y/N)")
 			
@@ -81,14 +77,54 @@ def main():
 				print (" ", end='')
 				print (requests.status_codes._codes[posted.status_code][0])
 				
-		elif choice == 'L' or choice == 'l':
-			print()
-			coordlocation = newLocation(geocoder)
-			if coordlocation == 0:
-				print("Please enter coordinates manually: ")
-				currentlatitude = input("Latitude: ")
-				currentlongitude = input("Longitude: ")
-				coordlocation = pk.Location(currentlatitude, currentlongitude)
+		# Upvote Yak
+		elif choice[0] == 'U' or choice[0] == 'u':
+			if len(choice) > 2:
+				voteYakNum = int(choice[2:])
+			else:
+				voteYakNum = int(input("Enter yak number to upvote (displayed above each one): "))
+				
+			if len(yaklist) > 0:
+				upvoted = remoteyakker.upvote_yak(yaklist[voteYakNum].message_id)
+			else:
+				yaklist = remoteyakker.get_yaks()
+				upvoted = remoteyakker.upvote_yak(yaklist[voteYakNum].message_id)
+				
+			if upvoted:
+				print("\nUpvote successful :)\n\n")
+			else:
+				print("\nUpvote failed :(\t", end='')
+				print (posted.status_code, end='')
+				print (" ", end='')
+				print (requests.status_codes._codes[posted.status_code][0])
+				
+		# Downvote Yak	
+		elif choice[0] == 'D' or choice[0] == 'D':
+			if len(choice) > 2:
+				voteYakNum = int(choice[2:])
+			else:
+				voteYakNum = int(input("Enter yak number to downvote (displayed above each one): "))
+				
+			if len(yaklist) > 0:
+				downvoted = remoteyakker.downvote_yak(yaklist[voteYakNum].message_id)
+			else:
+				yaklist = remoteyakker.get_yaks()
+				downvoted = remoteyakker.downvote_yak(yaklist[voteYakNum].message_id)
+				
+			if downvoted:
+				print("\nDownvote successful :)\n\n")
+			else:
+				print("\nDownvote failed :(\t", end='')
+				print (posted.status_code, end='')
+				print (" ", end='')
+				print (requests.status_codes._codes[posted.status_code][0])
+				
+		# Change Location
+		elif choice[0] == 'L' or choice[0] == 'l':
+			if len(choice) > 2:
+				coordlocation = changeLocation(geocoder, choice[2:])
+			else:
+				coordlocation = changeLocation(geocoder)
 			remoteyakker.update_location(coordlocation)
 			yaklist = remoteyakker.get_yaks()
 			
@@ -96,9 +132,10 @@ def main():
 		elif choice == 'Q' or choice == 'q':
 			break;
 			
-def newLocation(geocoder):
+def newLocation(geocoder, address=""):
 	# figure out location latitude and longitude based on address
-	address = input("Enter college name or address: ")
+	if len(address) == 0:
+		address = input("Enter college name or address: ")
 	try:
 		currentlocation = geocoder.geocode(address)
 	except:
@@ -120,5 +157,35 @@ def newLocation(geocoder):
 		print("Unable to get location.")
 		
 	return coordlocation
-
+	
+def changeLocation(geocoder, address=""):
+	print()
+	coordlocation = newLocation(geocoder, address)
+	if coordlocation == 0:
+		print("Please enter coordinates manually: ")
+		currentlatitude = input("Latitude: ")
+		currentlongitude = input("Longitude: ")
+		coordlocation = pk.Location(currentlatitude, currentlongitude)
+	
+def read(yaklist):
+	yakNum = 1
+	for yak in yaklist:
+		# line between yaks
+		print ("_" * 93)
+		print (yakNum)
+		yak.print_yak()
+		
+		# comments header
+		comments = yak.get_comments()
+		print ("\n\t\tComments:", end='')
+		print (len(comments))
+		
+		# print all comments separated by dashes
+		for comment in comments:
+			print ("\t\t", end='')
+			print ("-" * 77)
+			comment.print_comment()
+			
+		yakNum += 1
+		
 main()
