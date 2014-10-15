@@ -32,14 +32,32 @@ def main():
 			currentlatitude = input("Latitude: ")
 			currentlongitude = input("Longitude: ")
 			coordlocation = pk.Location(currentlatitude, currentlongitude)
-		
-		# create new user	
-		registernewuser = True
 	
 	print()
 	
-	# start API and get list of yaks
-	remoteyakker = pk.Yakker(None, coordlocation, registernewuser)
+	try:
+		# If user already has ID, read file
+		f = open("userID", "r")
+		userID = f.read()
+		f.close()
+		
+		# start API with saved user ID
+		remoteyakker = pk.Yakker(userID, coordlocation, False)
+		
+	except:
+		# start API and create new user ID
+		remoteyakker = pk.Yakker(None, coordlocation, True)
+		
+		try:
+			# Create file if it does not exist and write user ID
+			f = open("userID", 'w+')
+			f.write(remoteyakker.id)
+			f.close()
+			
+		except:
+			pass
+			
+	print("User ID: ", remoteyakker.id, "\n")
 	
 	while True:
 		choice = input("Read(R), Post(P), Upvote(U), Downvote(D), Choose New Location(L), or Quit(Q) -> ")
