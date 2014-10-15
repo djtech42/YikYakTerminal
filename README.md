@@ -67,9 +67,9 @@ Viewing a Yak:
     
     		Posted  2014-10-12 01:15:36
 
-## Experimental Builds
+## Experimental Versions
 
-Builds containing new, unreleased features will be available on the beta branch. There is no guarantee that these features will work.
+Commits containing new, unreleased features will be available on the beta branch. There is no guarantee that these features will work.
     		
 ## API and Licensing
 
