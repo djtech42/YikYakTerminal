@@ -201,7 +201,7 @@ class Yakker:
 
 		return hash, salt
 		
-	def sign_request2(self, page, params):
+	def post_sign_request(self, page, params):
 		key = "35FD04E8-B7B1-45C4-9886-94A75F4A2BB4"
 	
 		#The salt is just the current time in seconds since epoch
@@ -236,7 +236,7 @@ class Yakker:
 	def post(self, page, params):
 		url = self.base_url + page
 
-		hash, salt = self.sign_request2(page, params)
+		hash, salt = self.post_sign_request(page, params)
 		getparams = {'hash': hash, 'salt': salt}
 
 		headers = {
