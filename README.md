@@ -1,7 +1,14 @@
-Yik Yak Command Line Version (BETA)
+Yik Yak Command Line Version (2.0 BETA)
 ==============
 
-Python implementation of Yik Yak using the pyak API by joseph346. It reads and posts yaks. Beta version adds upvoting and downvoting for yaks.
+Python implementation of Yik Yak using the pyak API by joseph346. It reads and posts yaks. Beta version adds:
+- Upvoting and Downvoting of Yaks
+- Upvoting and Downvoting of Comments
+- Posting Comments
+- Reading Top Local Yaks
+- Reading Best Yaks of All Time
+- Viewing Yaks Posted by Self
+- See Yakarma Level
 
 --------------------------------------------------------------------------------------
 ## Getting Started Guide for Users on OS X and Linux
@@ -69,11 +76,11 @@ Viewing a Yak:
     	3 likes  |  Posted  2014-10-12 00:50:19  at  39.9435063 -82.9450901
     
     		Comments:2
-    		-----------------------------------------------------------------------------
+    	  1 -----------------------------------------------------------------------------
     		(2) Supposedly that's happening Wednesday 
     
     		Posted  2014-10-12 01:11:52
-    		-----------------------------------------------------------------------------
+    	  2 -----------------------------------------------------------------------------
     		(1) thank god  
     
     		Posted  2014-10-12 01:15:36
