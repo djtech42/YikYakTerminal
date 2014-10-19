@@ -48,7 +48,10 @@ class Comment:
 		self.poster_id = raw["posterID"]
 		self.liked = int(raw["liked"])
 
-		self.message_id = self.message_id.replace('\\', '')
+		try:
+			self.message_id = self.message_id.replace('\\', '')
+		except:
+			pass
 
 	def upvote(self):
 		if self.liked == 0:
@@ -86,16 +89,22 @@ class Yak:
 		self.poster_id = raw["posterID"]
 		self.hide_pin = bool(int(raw["hidePin"]))
 		self.message_id = raw["messageID"]
-		self.delivery_id = raw["deliveryID"]
+		try:
+			self.delivery_id = raw["deliveryID"]
+		except KeyError:
+			pass
 		self.longitude = raw["longitude"]
 		self.comments = int(raw["comments"])
 		self.time = parse_time(raw["time"])
 		self.latitude = raw["latitude"]
 		self.likes = int(raw["numberOfLikes"])
 		self.message = raw["message"]
-		self.type = raw["type"]
-		self.liked = int(raw["liked"])
-		self.reyaked = raw["reyaked"]
+		try:
+			self.type = raw["type"]
+			self.liked = int(raw["liked"])
+			self.reyaked = raw["reyaked"]
+		except KeyError:
+			pass
 
 		#Yaks don't always have a handle
 		try:
@@ -104,7 +113,10 @@ class Yak:
 			self.handle = None
 
 		#For some reason this seems necessary
-		self.message_id = self.message_id.replace('\\', '')
+		try:
+			self.message_id = self.message_id.replace('\\', '')
+		except:
+			pass
 
 	def upvote(self):
 		if self.liked == 0:
@@ -390,7 +402,9 @@ class Yakker:
 			"lat": self.location.latitude,
 			"long": self.location.longitude,
 		}
-		return self.get_yak_list("getAreaTops", params)
+		toplist = self.get_yak_list("getAreaTops", params)
+		toplist.sort(key=lambda x: x.likes, reverse=True)
+		return toplist
 
 	def get_yaks(self):
 		params = {
