@@ -68,7 +68,7 @@ def main():
 	
 	while True:
 		print()
-		choice = input("*Read Latest Yaks\t\t(R)\n*Read Top Local Yaks\t\t(T)\n\n*Read Best Yaks of All Time\t(B)\n\n*Read User Yaks\t\t\t(S)\n\n*Post Yak\t\t\t(P) or (P <message>)\n*Post Comment\t\t\t(C) or (C <yak#>)\n\n*Upvote Yak\t\t\t(U) or (U <yak#>)\n*Downvote Yak\t\t\t(D) or (D <yak#>)\n\n*Upvote Comment\t\t\t(V) or (V <yak# comment#>)\n*Downvote Comment\t\t(H) or (H <yak# comment#>)\n\n*Yakarma Level\t\t\t(Y)\n\n*Choose New Location\t\t(L) or (L <location>)\n\n*Quit Yik Yak\t\t\t(Q)\n\n-> ")
+		choice = input("*Read Latest Yaks\t\t(R)\n*Read Top Local Yaks\t\t(T)\n\n*Read Best Yaks of All Time\t(B)\n\n*Show User Yaks\t\t\t(S)\n*Show User Comments\t\t(O)\n\n*Post Yak\t\t\t(P) or (P <message>)\n*Post Comment\t\t\t(C) or (C <yak#>)\n\n*Upvote Yak\t\t\t(U) or (U <yak#>)\n*Downvote Yak\t\t\t(D) or (D <yak#>)\n\n*Upvote Comment\t\t\t(V) or (V <yak# comment#>)\n*Downvote Comment\t\t(H) or (H <yak# comment#>)\n\n*Yakarma Level\t\t\t(Y)\n\n*Choose New User ID\t\t(I) or (I <userID>)\n*Choose New Location\t\t(L) or (L <location>)\n\n*Quit Yik Yak\t\t\t(Q)\n\n-> ")
 		# Read Yaks
 		if choice == 'R' or choice == 'r':
 			currentlist = remoteyakker.get_yaks()
@@ -79,14 +79,19 @@ def main():
 			currentlist = remoteyakker.get_area_tops()
 			read(currentlist)
 			
-		# Read User Yaks
+		# Read Best of All Time
+		elif choice == 'B' or choice == 'b':
+			currentlist = remoteyakker.get_greatest()
+			read(currentlist)
+			
+		# Show User Yaks
 		elif choice == 'S' or choice == 's':
 			currentlist = remoteyakker.get_my_recent_yaks()
 			read(currentlist)
 			
-		# Read Best of All Time
-		elif choice == 'B' or choice == 'b':
-			currentlist = remoteyakker.get_greatest()
+		# Show User Comments
+		elif choice == 'O' or choice == 'o':
+			currentlist = remoteyakker.get_recent_replied()
 			read(currentlist)
 			
 		# Post Yak
@@ -240,6 +245,19 @@ def main():
 		elif choice == 'Y' or choice == 'y':
 			print ("\nYakarma Level:",remoteyakker.get_yakarma())
 			
+		# Change User ID
+		elif choice[0] == 'I' or choice[0] == 'i':
+			if len(choice) > 2:
+				remoteyakker = setUserID(remoteyakker.location, choice[2:])
+			else:
+				remoteyakker = setUserID(remoteyakker.location)
+			
+			print("\nUser ID: ", remoteyakker.id, "\n")
+			
+			print("Connecting to Yik Yak server...\n")
+			
+			print ("Yakarma Level:",remoteyakker.get_yakarma(), "\n")
+				
 		# Change Location
 		elif choice[0] == 'L' or choice[0] == 'l':
 			if len(choice) > 2:
@@ -279,6 +297,25 @@ def newLocation(geocoder, address=""):
 		print("Unable to get location.")
 		
 	return coordlocation
+	
+def setUserID(location, userID=""):
+	if userID == "":
+		userID = input("Enter userID or leave blank to generate random ID: ")
+		
+	if userID == "":
+		remoteyakker = pk.Yakker(None, location, True)
+	else:
+		remoteyakker = pk.Yakker(userID, location, False)
+	try:
+		# Create file if it does not exist and write user ID
+		f = open("userID", 'w+')
+		f.write(remoteyakker.id)
+		f.close()
+		
+	except:
+		pass
+	
+	return remoteyakker
 	
 def changeLocation(geocoder, address=""):
 	coordlocation = newLocation(geocoder, address)
