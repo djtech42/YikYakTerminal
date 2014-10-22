@@ -62,7 +62,7 @@ class Comment:
 	def downvote(self):
 		if self.liked == 0:
 			self.likes -= 1
-			self.liked += 1
+			self.liked -= 1
 			return self.client.downvote_comment(self.comment_id)
 
 	def report(self):
@@ -78,9 +78,9 @@ class Comment:
 	def print_comment(self):
 		my_action = ""
 		if self.liked > 0:
-			my_action = "^"
+			my_action = "^ "
 		elif self.liked < 0:
-			my_action = "v"
+			my_action = "v "
 		print ("\t\t%s(%s) %s \n\n\t\tPosted  %s" % (my_action, self.likes, self.comment, self.time))
 
 class Yak:
@@ -151,16 +151,17 @@ class Yak:
 			print ("### %s ###" % self.handle)
 		print ()
 		print (self.message)
-		# Show arrow if yak is upvoted
-		if self.liked:
-			likeString = "^ "
-		else:
-			likeString = ""
-		print ("\n\t%s%s likes  |  Posted  %s  at  %s %s" % (likeString, self.likes, self.time, self.latitude, self.longitude))
+		# Show arrow if yak is upvoted or downvoted
+		my_action = ""
+		if self.liked > 0:
+			my_action = "^ "
+		elif self.liked < 0:
+			my_action = "v "
+		print ("\n\t%s%s likes  |  Posted  %s  at  %s %s" % (my_action, self.likes, self.time, self.latitude, self.longitude))
 
 class Yakker:
 	base_url = "https://yikyakapp.com/api/"
-	user_agent = "Mozilla/5.1 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"
+	user_agent = "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Google Nexus 4 - 4.4.4 - API 19 - 768x1280 Build/KTU84P)"
 
 	def __init__(self, user_id=None, location=None, force_register=False):
 		if location is None:
