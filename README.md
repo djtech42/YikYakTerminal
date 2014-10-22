@@ -148,6 +148,14 @@ Downvoting a comment: ```-> H 31 1```
     		(1) thank god  
     
     		Posted  2014-10-12 01:15:36
+    		
+- Yak Number
+- Yak
+- Number of likes | Post date and time, location
+- Number of comments
+- Comment Number
+- (Vote Number) Comment
+- Comment post date and time
 
 ## Experimental Versions
 
