@@ -68,7 +68,7 @@ def main():
 	
 	while True:
 		print()
-		choice = input("*Read Latest Yaks\t\t(R)\n*Read Top Local Yaks\t\t(T)\n\n*Read Best Yaks of All Time\t(B)\n\n*Read User Yaks\t\t\t(S)\n\n*Post Yak\t\t\t(P) or (P <message>)\n*Post Comment\t\t\t(C) or (C <yak#>)\n\n*Upvote Yak\t\t\t(U) or (U <yak#>)\n*Downvote Yak\t\t\t(D) or (D <yak#>)\n\n*Upvote Comment\t\t\t(UC) or (UC <comment#>)\n*Downvote Comment\t\t(DC) or (DC <comment#>)\n\n*Yakarma Level\t\t\t(Y)\n\n*Choose New Location\t\t(L) or (L <location>)\n\n*Quit Yik Yak\t\t\t(Q)\n\n-> ")
+		choice = input("*Read Latest Yaks\t\t(R)\n*Read Top Local Yaks\t\t(T)\n\n*Read Best Yaks of All Time\t(B)\n\n*Read User Yaks\t\t\t(S)\n\n*Post Yak\t\t\t(P) or (P <message>)\n*Post Comment\t\t\t(C) or (C <yak#>)\n\n*Upvote Yak\t\t\t(U) or (U <yak#>)\n*Downvote Yak\t\t\t(D) or (D <yak#>)\n\n*Upvote Comment\t\t\t(V) or (V <yak# comment#>)\n*Downvote Comment\t\t(H) or (H <yak# comment#>)\n\n*Yakarma Level\t\t\t(Y)\n\n*Choose New Location\t\t(L) or (L <location>)\n\n*Quit Yik Yak\t\t\t(Q)\n\n-> ")
 		# Read Yaks
 		if choice == 'R' or choice == 'r':
 			currentlist = remoteyakker.get_yaks()
@@ -181,17 +181,24 @@ def main():
 				print (requests.status_codes._codes[posted.status_code][0])
 		
 		# Upvote Comment
-		elif choice[0] == 'UC' or choice[0] == 'uc':
-			if len(choice) > 2:
-				voteCommentNum = int(choice[3:])
+		elif choice[0] == 'V' or choice[0] == 'v':
+			parameters = choice.split()
+			
+			if len(parameters) == 3:
+				yakNum = int(parameters[1])
+				voteCommentNum = int(parameters[2])
+			elif len(parameters) == 2:
+				yakNum = int(parameters[1])
+				voteCommentNum = int(input("Enter comment number to upvote (displayed above each one): "))
 			else:
+				yakNum = int(input("Enter yak number (displayed above each one): "))
 				voteCommentNum = int(input("Enter comment number to upvote (displayed above each one): "))
 				
 			if len(currentlist) > 0:
-				upvoted = remoteyakker.upvote_comment(currentlist[voteCommentNum-1].comment_id)
+				upvoted = remoteyakker.upvote_comment(currentlist[yakNum-1].get_comments()[voteCommentNum-1].comment_id)
 			else:
 				yaklist = remoteyakker.get_yaks()
-				upvoted = remoteyakker.upvote_comment(currentlist[voteCommentNum-1].comment_id)
+				upvoted = remoteyakker.upvote_comment(currentlist[yakNum-1].get_comments()[voteCommentNum-1].comment_id)
 				
 			if upvoted:
 				print("\nUpvote successful :)")
@@ -202,17 +209,24 @@ def main():
 				print (requests.status_codes._codes[posted.status_code][0])
 				
 		# Downvote Comment	
-		elif choice[0] == 'DC' or choice[0] == 'dc':
-			if len(choice) > 2:
-				voteCommentNum = int(choice[3:])
+		elif choice[0] == 'H' or choice[0] == 'h':
+			parameters = choice.split()
+			
+			if len(parameters) == 3:
+				yakNum = int(parameters[1])
+				voteCommentNum = int(parameters[2])
+			elif len(parameters) == 2:
+				yakNum = int(parameters[1])
+				voteCommentNum = int(input("Enter comment number to downvote (displayed above each one): "))
 			else:
+				yakNum = int(input("Enter yak number (displayed above each one): "))
 				voteCommentNum = int(input("Enter comment number to downvote (displayed above each one): "))
 				
 			if len(currentlist) > 0:
-				downvoted = remoteyakker.downvote_yak(currentlist[voteCommentNum-1].comment_id)
+				downvoted = remoteyakker.downvote_comment(currentlist[yakNum-1].get_comments()[voteCommentNum-1].comment_id)
 			else:
 				yaklist = remoteyakker.get_yaks()
-				downvoted = remoteyakker.downvote_yak(currentlist[voteCommentNum-1].comment_id)
+				downvoted = remoteyakker.downvote_comment(currentlist[yakNum-1].get_comments()[voteCommentNum-1].comment_id)
 				
 			if downvoted:
 				print("\nDownvote successful :)")
@@ -277,13 +291,13 @@ def changeLocation(geocoder, address=""):
 	
 def read(yaklist):
 	yakNum = 1
-	commentNum = 1
 	for yak in yaklist:
 		# line between yaks
 		print ("_" * 93)
 		print (yakNum)
 		yak.print_yak()
 		
+		commentNum = 1
 		# comments header
 		comments = yak.get_comments()
 		print ("\n\t\tComments:", end='')

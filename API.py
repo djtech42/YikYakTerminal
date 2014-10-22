@@ -142,9 +142,6 @@ class Yak:
 
 	def get_comments(self):
 		return self.client.get_comments(self.message_id)
-		
-	def get_locationNum(self):
-		return self.latitude - self.longitude
 
 	def print_yak(self):
 		if self.handle is not None:
