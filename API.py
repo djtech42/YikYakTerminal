@@ -151,7 +151,12 @@ class Yak:
 			print ("### %s ###" % self.handle)
 		print ()
 		print (self.message)
-		print ("\n\t%s likes  |  Posted  %s  at  %s %s" % (self.likes, self.time, self.latitude, self.longitude))
+		# Show arrow if yak is upvoted
+		if self.liked:
+			likeString = "^ "
+		else:
+			likeString = ""
+		print ("\n\t%s%s likes  |  Posted  %s  at  %s %s" % (likeString, self.likes, self.time, self.latitude, self.longitude))
 
 class Yakker:
 	base_url = "https://yikyakapp.com/api/"

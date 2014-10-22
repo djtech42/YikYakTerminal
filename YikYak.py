@@ -22,7 +22,7 @@ def main():
 		
 		f.close()
 		
-	except:
+	except FileNotFoundError:
 		# If first time using app, ask for preferred location
 		coordlocation = newLocation(geocoder)
 		# If location retrieval fails, ask user for coordinates
@@ -43,7 +43,7 @@ def main():
 		# start API with saved user ID
 		remoteyakker = pk.Yakker(userID, coordlocation, False)
 		
-	except:
+	except FileNotFoundError:
 		# start API and create new user ID
 		remoteyakker = pk.Yakker(None, coordlocation, True)
 		
@@ -57,6 +57,10 @@ def main():
 			pass
 			
 	print("User ID: ", remoteyakker.id, "\n")
+	
+	print("Connecting to Yik Yak server...\n")
+	
+	print ("Yakarma Level:",remoteyakker.get_yakarma(), "\n")
 	
 	print("Type one of the one-letter commands below or use the command in conjunction with a parameter.")
 	
@@ -94,7 +98,7 @@ def main():
 				message = input("Enter message to yak: \n")
 				
 			handle = input("Add handle: (Blank to omit): \n")
-			showlocation = input("Show location? (Y/N)")
+			showlocation = input("Show location? (Y/N) ")
 			
 			if showlocation == 'Y' or showlocation == 'y':
 				allowlocation = True
@@ -120,7 +124,7 @@ def main():
 			if len(choice) > 2:
 				yakNum = int(choice[2:])
 			else:
-				yakNum = int(input("Enter yakNum: "))
+				yakNum = int(input("Enter yak number (displayed above each one): "))
 			
 			comment = input("Enter comment:\n")
 			
@@ -148,7 +152,7 @@ def main():
 				upvoted = remoteyakker.upvote_yak(currentlist[voteYakNum-1].message_id)
 				
 			if upvoted:
-				print("\nUpvote successful :)\n\n")
+				print("\nUpvote successful :)")
 			else:
 				print("\nUpvote failed :(\t", end='')
 				print (posted.status_code, end='')
@@ -169,7 +173,7 @@ def main():
 				downvoted = remoteyakker.downvote_yak(currentlist[voteYakNum-1].message_id)
 				
 			if downvoted:
-				print("\nDownvote successful :)\n\n")
+				print("\nDownvote successful :)")
 			else:
 				print("\nDownvote failed :(\t", end='')
 				print (posted.status_code, end='')
@@ -190,7 +194,7 @@ def main():
 				upvoted = remoteyakker.upvote_comment(currentlist[voteCommentNum-1].comment_id)
 				
 			if upvoted:
-				print("\nUpvote successful :)\n\n")
+				print("\nUpvote successful :)")
 			else:
 				print("\nUpvote failed :(\t", end='')
 				print (posted.status_code, end='')
@@ -211,7 +215,7 @@ def main():
 				downvoted = remoteyakker.downvote_yak(currentlist[voteCommentNum-1].comment_id)
 				
 			if downvoted:
-				print("\nDownvote successful :)\n\n")
+				print("\nDownvote successful :)")
 			else:
 				print("\nDownvote failed :(\t", end='')
 				print (posted.status_code, end='')
