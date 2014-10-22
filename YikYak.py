@@ -5,7 +5,6 @@ import requests
 
 def main():
 	print("\nYik Yak Command Line Edition : Created by djtech42\n\n")
-	print("Note: This app is currently only for viewing and posting yaks at any location. There is no ability to vote or delete yet.\n\n")
 	
 	geocoder = pygeocoder.Geocoder("AIzaSyAGeW6l17ATMZiNTRExwvfa2iuPA1DvJqM")
 	
