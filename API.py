@@ -48,7 +48,10 @@ class Comment:
 		self.poster_id = raw["posterID"]
 		self.liked = int(raw["liked"])
 
-		self.message_id = self.message_id.replace('\\', '')
+		try:
+			self.message_id = self.message_id.replace('\\', '')
+		except:
+			pass
 
 	def upvote(self):
 		if self.liked == 0:
@@ -59,7 +62,7 @@ class Comment:
 	def downvote(self):
 		if self.liked == 0:
 			self.likes -= 1
-			self.liked += 1
+			self.liked -= 1
 			return self.client.downvote_comment(self.comment_id)
 
 	def report(self):
@@ -75,9 +78,9 @@ class Comment:
 	def print_comment(self):
 		my_action = ""
 		if self.liked > 0:
-			my_action = "^"
+			my_action = "^ "
 		elif self.liked < 0:
-			my_action = "v"
+			my_action = "v "
 		print ("\t\t%s(%s) %s \n\n\t\tPosted  %s" % (my_action, self.likes, self.comment, self.time))
 
 class Yak:
@@ -86,16 +89,22 @@ class Yak:
 		self.poster_id = raw["posterID"]
 		self.hide_pin = bool(int(raw["hidePin"]))
 		self.message_id = raw["messageID"]
-		self.delivery_id = raw["deliveryID"]
+		try:
+			self.delivery_id = raw["deliveryID"]
+		except KeyError:
+			pass
 		self.longitude = raw["longitude"]
 		self.comments = int(raw["comments"])
 		self.time = parse_time(raw["time"])
 		self.latitude = raw["latitude"]
 		self.likes = int(raw["numberOfLikes"])
 		self.message = raw["message"]
-		self.type = raw["type"]
-		self.liked = int(raw["liked"])
-		self.reyaked = raw["reyaked"]
+		try:
+			self.type = raw["type"]
+			self.liked = int(raw["liked"])
+			self.reyaked = raw["reyaked"]
+		except KeyError:
+			pass
 
 		#Yaks don't always have a handle
 		try:
@@ -104,7 +113,10 @@ class Yak:
 			self.handle = None
 
 		#For some reason this seems necessary
-		self.message_id = self.message_id.replace('\\', '')
+		try:
+			self.message_id = self.message_id.replace('\\', '')
+		except:
+			pass
 
 	def upvote(self):
 		if self.liked == 0:
@@ -130,20 +142,23 @@ class Yak:
 
 	def get_comments(self):
 		return self.client.get_comments(self.message_id)
-		
-	def get_locationNum(self):
-		return self.latitude - self.longitude
 
 	def print_yak(self):
 		if self.handle is not None:
 			print ("### %s ###" % self.handle)
 		print ()
 		print (self.message)
-		print ("\n\t%s likes  |  Posted  %s  at  %s %s" % (self.likes, self.time, self.latitude, self.longitude))
+		# Show arrow if yak is upvoted or downvoted
+		my_action = ""
+		if self.liked > 0:
+			my_action = "^ "
+		elif self.liked < 0:
+			my_action = "v "
+		print ("\n\t%s%s likes  |  Posted  %s  at  %s %s" % (my_action, self.likes, self.time, self.latitude, self.longitude))
 
 class Yakker:
 	base_url = "https://yikyakapp.com/api/"
-	user_agent = "Mozilla/5.1 (Linux; Android 4.0.4; Galaxy Nexus Build/IMM76B) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.133 Mobile Safari/535.19"
+	user_agent = "Dalvik/1.6.0 (Linux; U; Android 4.4.4; Google Nexus 4 - 4.4.4 - API 19 - 768x1280 Build/KTU84P)"
 
 	def __init__(self, user_id=None, location=None, force_register=False):
 		if location is None:
@@ -390,7 +405,9 @@ class Yakker:
 			"lat": self.location.latitude,
 			"long": self.location.longitude,
 		}
-		return self.get_yak_list("getAreaTops", params)
+		toplist = self.get_yak_list("getAreaTops", params)
+		toplist.sort(key=lambda x: x.likes, reverse=True)
+		return toplist
 
 	def get_yaks(self):
 		params = {
