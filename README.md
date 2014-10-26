@@ -1,3 +1,5 @@
+Important: API has changed, so some functions will probably not work until I fix them.
+
 Yik Yak Command Line Version (Version 2.0)
 ==============
 
