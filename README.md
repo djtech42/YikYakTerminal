@@ -1,4 +1,4 @@
-## Important: API has changed, so some functions will probably not work until I fix them.
+## Important: API has changed, so only reading yaks and comments works right now. I am working on a fix.
 
 Yik Yak Command Line Version (Version 2.0)
 ==============
