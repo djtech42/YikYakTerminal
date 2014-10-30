@@ -186,8 +186,9 @@ class Yakker:
 	def register_id_new(self, id):
 		params = {
 			"userID": id,
-			"lat": self.location.latitude,
-			"long": self.location.longitude,
+			"userLat": self.location.latitude,
+			"userLong": self.location.longitude,
+			"version": self.version,
 		}
 		result = self.get("registerUser", params)
 		return result
@@ -297,8 +298,8 @@ class Yakker:
 		params = {
 			"userID": self.id,
 			"messageID": message_id,
-			"lat": self.location.latitude,
-			"long": self.location.longitude,
+			"userLat": self.location.latitude,
+			"userLong": self.location.longitude,
 			"version": self.version,
 		}
 		return self.get("likeMessage", params)
@@ -307,8 +308,8 @@ class Yakker:
 		params = {
 			"userID": self.id,
 			"messageID": message_id,
-			"lat": self.location.latitude,
-			"long": self.location.longitude,
+			"userLat": self.location.latitude,
+			"userLong": self.location.longitude,
 			"version": self.version,
 		}
 		return self.get("downvoteMessage", params)
