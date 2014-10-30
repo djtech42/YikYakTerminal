@@ -1,5 +1,3 @@
-## Important: API has changed, so only reading yaks and comments works right now. I am working on a fix.
-
 Yik Yak Command Line Version (Version 2.0)
 ==============
 
