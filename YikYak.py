@@ -4,29 +4,36 @@ import pygeocoder
 import requests
 
 def main():
+	# Title text
 	print("\nYik Yak Command Line Edition : Created by djtech42\n\n")
 	
+	# Initialize Google Geocoder API
 	geocoder = pygeocoder.Geocoder("AIzaSyAGeW6l17ATMZiNTRExwvfa2iuPA1DvJqM")
 	
 	try:
 		# If location already set in past, read file
 		f = open("locationsetting", "r")
 		fileinput = f.read()
+		f.close()
+		
+		# Extract location coordinates and name from file
 		coords = fileinput.split('\n')
+		
 		currentlatitude = coords[0]
 		currentlongitude = coords[1]
 		print("Location is set to: ", coords[2])
 		
+		# Set up coordinate object
 		coordlocation = pk.Location(currentlatitude, currentlongitude)
-		
-		f.close()
 		
 	except FileNotFoundError:
 		# If first time using app, ask for preferred location
 		coordlocation = newLocation(geocoder)
+		
 		# If location retrieval fails, ask user for coordinates
 		if coordlocation == 0:
 			print("Please enter coordinates manually: ")
+			
 			currentlatitude = input("Latitude: ")
 			currentlongitude = input("Longitude: ")
 			coordlocation = pk.Location(currentlatitude, currentlongitude)
@@ -55,19 +62,22 @@ def main():
 		except:
 			pass
 			
+	# Print User Info Text
 	print("User ID: ", remoteyakker.id, "\n")
-	
 	print("Connecting to Yik Yak server...\n")
-	
-	print ("Yakarma Level:",remoteyakker.get_yakarma(), "\n")
-	
+	print("Yakarma Level:",remoteyakker.get_yakarma(), "\n")
 	print("Type one of the one-letter commands below or use the command in conjunction with a parameter.")
 	
 	currentlist = []
 	
+	# When actions are completed, user can execute another action or quit the app
 	while True:
+		# Insert line gap
 		print()
+		
+		# Show all action choices
 		choice = input("*Read Latest Yaks\t\t(R)\n*Read Top Local Yaks\t\t(T)\n\n*Read Best Yaks of All Time\t(B)\n\n*Show User Yaks\t\t\t(S)\n*Show User Comments\t\t(O)\n\n*Post Yak\t\t\t(P) or (P <message>)\n*Post Comment\t\t\t(C) or (C <yak#>)\n\n*Upvote Yak\t\t\t(U) or (U <yak#>)\n*Downvote Yak\t\t\t(D) or (D <yak#>)\n\n*Upvote Comment\t\t\t(V) or (V <yak# comment#>)\n*Downvote Comment\t\t(H) or (H <yak# comment#>)\n\n*Yakarma Level\t\t\t(Y)\n\n*Choose New User ID\t\t(I) or (I <userID>)\n*Choose New Location\t\t(L) or (L <location>)\n\n*Quit Yik Yak\t\t\t(Q)\n\n-> ")
+		
 		# Read Yaks
 		if choice == 'R' or choice == 'r':
 			currentlist = remoteyakker.get_yaks()
@@ -101,6 +111,7 @@ def main():
 			else:
 				message = input("Enter message to yak: \n")
 				
+			# handle and location options
 			handle = input("Add handle: (Blank to omit): \n")
 			showlocation = input("Show location? (Y/N) ")
 			
@@ -251,19 +262,21 @@ def main():
 			else:
 				remoteyakker = setUserID(remoteyakker.location)
 			
+			# Print User Info Text
 			print("\nUser ID: ", remoteyakker.id, "\n")
-			
 			print("Connecting to Yik Yak server...\n")
-			
 			print ("Yakarma Level:",remoteyakker.get_yakarma(), "\n")
 				
 		# Change Location
 		elif choice[0] == 'L' or choice[0] == 'l':
+			# set location from parameter or input
 			if len(choice) > 2:
 				coordlocation = changeLocation(geocoder, choice[2:])
 			else:
 				coordlocation = changeLocation(geocoder)
+				
 			remoteyakker.update_location(coordlocation)
+			
 			yaklist = remoteyakker.get_yaks()
 			currentlist = yaklist
 			
@@ -278,7 +291,7 @@ def newLocation(geocoder, address=""):
 	try:
 		currentlocation = geocoder.geocode(address)
 	except:
-		print("\nGoogle Geocoding API has reached the limit of queries.\n")
+		print("\nGoogle Geocoding API is offline or has reached the limit of queries.\n")
 		return 0
 		
 	coordlocation = 0
@@ -302,8 +315,10 @@ def setUserID(location, userID=""):
 		userID = input("Enter userID or leave blank to generate random ID: ")
 		
 	if userID == "":
+		# Create new userID
 		remoteyakker = pk.Yakker(None, location, True)
 	else:
+		# Use existing userID
 		remoteyakker = pk.Yakker(userID, location, False)
 	try:
 		# Create file if it does not exist and write user ID
@@ -318,11 +333,14 @@ def setUserID(location, userID=""):
 	
 def changeLocation(geocoder, address=""):
 	coordlocation = newLocation(geocoder, address)
+	
+	# If location retrieval fails, ask user for coordinates
 	if coordlocation == 0:
 		print("\nPlease enter coordinates manually: ")
 		currentlatitude = input("Latitude: ")
 		currentlongitude = input("Longitude: ")
 		coordlocation = pk.Location(currentlatitude, currentlongitude)
+		
 	return coordlocation
 	
 def read(yaklist):
@@ -330,6 +348,7 @@ def read(yaklist):
 	for yak in yaklist:
 		# line between yaks
 		print ("_" * 93)
+		# show yak
 		print (yakNum)
 		yak.print_yak()
 		
@@ -337,6 +356,7 @@ def read(yaklist):
 		# comments header
 		comments = yak.get_comments()
 		print ("\n\t\tComments:", end='')
+		# number of comments
 		print (len(comments))
 		
 		# print all comments separated by dashes
