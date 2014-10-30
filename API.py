@@ -6,6 +6,7 @@ import time
 import datetime
 import urllib
 import os
+import uuid
 
 from hashlib import sha1
 from hashlib import md5
@@ -179,14 +180,14 @@ class Yakker:
 		#self.update_stats()
 
 	def gen_id(self):
-		return md5(os.urandom(128)).hexdigest().upper()
+		# Thanks for the fix: ryhanson
+		return str(uuid.uuid4()).upper()
 
 	def register_id_new(self, id):
 		params = {
 			"userID": id,
 			"lat": self.location.latitude,
 			"long": self.location.longitude,
-			"version": self.version,
 		}
 		result = self.get("registerUser", params)
 		return result
