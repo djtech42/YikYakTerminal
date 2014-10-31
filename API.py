@@ -337,7 +337,7 @@ class Yakker:
 		return self.get("downvoteComment", params)
 
 	def report_yak(self, message_id):
-		params = params = {
+		params = {
 			"userID": self.id,
 			"messageID": message_id,
 			"userLat": self.location.latitude,
@@ -347,7 +347,7 @@ class Yakker:
 		return self.get("reportMessage", params)
 
 	def delete_yak(self, message_id):
-		params = params = {
+		params = {
 			"userID": self.id,
 			"messageID": message_id,
 			"userLat": self.location.latitude,
@@ -524,11 +524,11 @@ class Yakker:
 		
 	def peekLoc(self, location):
 		params = {
-				"lat": location.latitude,
-				"long": location.longitude,
-				"userID": self.id,
-				"userLat": self.location.latitude,
-				"userLong": self.location.longitude,
-				"version": self.version,
+			"lat": location.latitude,
+			"long": location.longitude,
+			"userID": self.id,
+			"userLat": self.location.latitude,
+			"userLong": self.location.longitude,
+			"version": self.version,
 		}
 		return self.get_yak_list("yaks", params)
