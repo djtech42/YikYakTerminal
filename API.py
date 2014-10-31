@@ -188,7 +188,7 @@ class Yakker:
 		params = {
 			"userID": id,
 			"userLat": self.location.latitude,
-			"userLong": self.location.longitude
+			"userLong": self.location.longitude,
 		}
 		result = self.get("registerUser", params)
 		return result
@@ -290,7 +290,7 @@ class Yakker:
 	def contact(self, message):
 		params = {
 			"userID": self.id,
-			"message": message
+			"message": message,
 		}
 		return self.get("contactUs", params)
 
