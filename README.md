@@ -1,4 +1,4 @@
-Yik Yak Command Line Version (Version 2.0)
+Yik Yak Command Line Version (Version 2.1)
 ==============
 
 Python implementation of Yik Yak using the pyak API by joseph346. More features to come in the future.
@@ -57,14 +57,18 @@ Actions are performed using a single letter and optional parameter(s).
     
     *Upvote Yak			        (U) or (U <yak#>)
     *Downvote Yak			    (D) or (D <yak#>)
+    *Report Yak					(E) or (E <yak#>)
     
     *Upvote Comment			    (V) or (V <yak# comment#>)
     *Downvote Comment		    (H) or (H <yak# comment#>)
+    *Report Comment				(M) or (M <yak# comment#>)
     
     *Yakarma Level			    (Y)
     
     *Choose New User ID		    (I) or (I <userID>)
     *Choose New Location		(L) or (L <location>)
+    
+    *Contact Yik Yak			(F)
     
     *Quit Yik Yak			    (Q)
     
