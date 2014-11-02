@@ -76,7 +76,7 @@ def main():
 		print()
 		
 		# Show all action choices
-		choice = input("*Read Latest Yaks\t\t(R)\n*Read Top Local Yaks\t\t(T)\n\n*Read Best Yaks of All Time\t(B)\n\n*Show User Yaks\t\t\t(S)\n*Show User Comments\t\t(O)\n\n*Post Yak\t\t\t(P) or (P <message>)\n*Post Comment\t\t\t(C) or (C <yak#>)\n\n*Upvote Yak\t\t\t(U) or (U <yak#>)\n*Downvote Yak\t\t\t(D) or (D <yak#>)\n*Report Yak\t\t\t(E) or (E <yak#>)\n\n*Upvote Comment\t\t\t(V) or (V <yak# comment#>)\n*Downvote Comment\t\t(H) or (H <yak# comment#>)\n\n*Yakarma Level\t\t\t(Y)\n\n*Choose New User ID\t\t(I) or (I <userID>)\n*Choose New Location\t\t(L) or (L <location>)\n\n*Quit Yik Yak\t\t\t(Q)\n\n-> ")
+		choice = input("*Read Latest Yaks\t\t(R)\n*Read Top Local Yaks\t\t(T)\n\n*Read Best Yaks of All Time\t(B)\n\n*Show User Yaks\t\t\t(S)\n*Show User Comments\t\t(O)\n\n*Post Yak\t\t\t(P) or (P <message>)\n*Post Comment\t\t\t(C) or (C <yak#>)\n\n*Upvote Yak\t\t\t(U) or (U <yak#>)\n*Downvote Yak\t\t\t(D) or (D <yak#>)\n*Report Yak\t\t\t(E) or (E <yak#>)\n\n*Upvote Comment\t\t\t(V) or (V <yak# comment#>)\n*Downvote Comment\t\t(H) or (H <yak# comment#>)\n*Report Comment\t\t\t(M) or (M <yak# comment#>)\n\n*Yakarma Level\t\t\t(Y)\n\n*Choose New User ID\t\t(I) or (I <userID>)\n*Choose New Location\t\t(L) or (L <location>)\n\n*Quit Yik Yak\t\t\t(Q)\n\n-> ")
 		
 		# Read Yaks
 		if choice.upper() == 'R':
@@ -135,16 +135,16 @@ def main():
 				
 		# Post Comment
 		elif choice[0].upper() == 'C':
-			# set message from parameter or input
-			if len(choice) > 2:
-				yakNum = int(choice[2:])
-			else:
-				yakNum = int(input("Enter yak number (displayed above each one): "))
-			
-			comment = input("Enter comment:\n")
-			
-			# If yaks loaded, add comment to yak at #
+			# If yaks not loaded, tell user to load one of the options
 			if len(currentlist) > 0:
+				# set message from parameter or input
+				if len(choice) > 2:
+					yakNum = int(choice[2:])
+				else:
+					yakNum = int(input("Enter yak number (displayed above each one): "))
+				
+				comment = input("Enter comment:\n")
+				
 				posted = remoteyakker.post_comment(currentlist[yakNum-1].message_id, comment)
 				
 				if posted:
@@ -154,20 +154,20 @@ def main():
 					print (posted.status_code, end='')
 					print (" ", end='')
 					print (requests.status_codes._codes[posted.status_code][0])
-					
+						
 			else:
 				print ("You must load a list of yaks first by reading latest, top local, best, or user yaks.")
 				
 		# Upvote Yak
 		elif choice[0].upper() == 'U':
-			if len(choice) > 2:
-				# Extract yak number
-				voteYakNum = int(choice[2:])
-			else:
-				voteYakNum = int(input("Enter yak number to upvote (displayed above each one): "))
-				
-			# If yaks loaded, add vote to yak at #
+			# If yaks not loaded, tell user to load one of the options
 			if len(currentlist) > 0:
+				if len(choice) > 2:
+					# Extract yak number
+					voteYakNum = int(choice[2:])
+				else:
+					voteYakNum = int(input("Enter yak number to upvote (displayed above each one): "))
+					
 				upvoted = remoteyakker.upvote_yak(currentlist[voteYakNum-1].message_id)
 				
 				if upvoted:
@@ -177,20 +177,20 @@ def main():
 					print (posted.status_code, end='')
 					print (" ", end='')
 					print (requests.status_codes._codes[posted.status_code][0])
-					
+						
 			else:
 				print ("You must load a list of yaks first by reading latest, top local, best, or user yaks.")
 				
 		# Downvote Yak	
 		elif choice[0].upper() == 'D':
-			if len(choice) > 2:
-				# Extract yak number
-				voteYakNum = int(choice[2:])
-			else:
-				voteYakNum = int(input("Enter yak number to downvote (displayed above each one): "))
-				
-			# If yaks loaded, downvote yak at #
+			# If yaks not loaded, tell user to load one of the options
 			if len(currentlist) > 0:
+				if len(choice) > 2:
+					# Extract yak number
+					voteYakNum = int(choice[2:])
+				else:
+					voteYakNum = int(input("Enter yak number to downvote (displayed above each one): "))
+				
 				downvoted = remoteyakker.downvote_yak(currentlist[voteYakNum-1].message_id)
 				
 				if downvoted:
@@ -206,20 +206,20 @@ def main():
 				
 		# Report Yak
 		elif choice[0].upper() == 'E':
-			if len(choice) > 2:
-				# Extract yak number
-				reportYakNum = int(choice[2:])
-			else:
-				reportYakNum = int(input("Enter yak number to report (displayed above each one): "))
-			
-			# If yaks loaded, report yak at #
+			# If yaks not loaded, tell user to load one of the options
 			if len(currentlist) > 0:
+				if len(choice) > 2:
+					# Extract yak number
+					reportYakNum = int(choice[2:])
+				else:
+					reportYakNum = int(input("Enter yak number to report (displayed above each one): "))
+			
 				reported = remoteyakker.report_yak(currentlist[reportYakNum-1].message_id)
 				
 				if reported:
-					print("\Report successful :)")
+					print("\nReport successful :)")
 				else:
-					print("\Report failed :(\t", end='')
+					print("\nReport failed :(\t", end='')
 					print (posted.status_code, end='')
 					print (" ", end='')
 					print (requests.status_codes._codes[posted.status_code][0])
@@ -230,20 +230,20 @@ def main():
 		
 		# Upvote Comment
 		elif choice[0].upper() == 'V':
-			parameters = choice.split()
-			
-			if len(parameters) == 3:
-				yakNum = int(parameters[1])
-				voteCommentNum = int(parameters[2])
-			elif len(parameters) == 2:
-				yakNum = int(parameters[1])
-				voteCommentNum = int(input("Enter comment number to upvote (displayed above each one): "))
-			else:
-				yakNum = int(input("Enter yak number (displayed above each one): "))
-				voteCommentNum = int(input("Enter comment number to upvote (displayed above each one): "))
-				
-			# If yaks and comments loaded, add vote to comment at #
+			# If yaks not loaded, tell user to load one of the options
 			if len(currentlist) > 0:
+				parameters = choice.split()
+				
+				if len(parameters) == 3:
+					yakNum = int(parameters[1])
+					voteCommentNum = int(parameters[2])
+				elif len(parameters) == 2:
+					yakNum = int(parameters[1])
+					voteCommentNum = int(input("Enter comment number to upvote (displayed above each one): "))
+				else:
+					yakNum = int(input("Enter yak number (displayed above each one): "))
+					voteCommentNum = int(input("Enter comment number to upvote (displayed above each one): "))
+					
 				upvoted = remoteyakker.upvote_comment(currentlist[yakNum-1].get_comments()[voteCommentNum-1].comment_id)
 				
 				if upvoted:
@@ -259,26 +259,55 @@ def main():
 				
 		# Downvote Comment	
 		elif choice[0].upper() == 'H':
-			parameters = choice.split()
-			
-			if len(parameters) == 3:
-				yakNum = int(parameters[1])
-				voteCommentNum = int(parameters[2])
-			elif len(parameters) == 2:
-				yakNum = int(parameters[1])
-				voteCommentNum = int(input("Enter comment number to downvote (displayed above each one): "))
-			else:
-				yakNum = int(input("Enter yak number (displayed above each one): "))
-				voteCommentNum = int(input("Enter comment number to downvote (displayed above each one): "))
-				
-			# If yaks and comments loaded, downvote comment at #
+			# If yaks not loaded, tell user to load one of the options
 			if len(currentlist) > 0:
+				parameters = choice.split()
+				
+				if len(parameters) == 3:
+					yakNum = int(parameters[1])
+					voteCommentNum = int(parameters[2])
+				elif len(parameters) == 2:
+					yakNum = int(parameters[1])
+					voteCommentNum = int(input("Enter comment number to downvote (displayed above each one): "))
+				else:
+					yakNum = int(input("Enter yak number (displayed above each one): "))
+					voteCommentNum = int(input("Enter comment number to downvote (displayed above each one): "))
+				
 				downvoted = remoteyakker.downvote_comment(currentlist[yakNum-1].get_comments()[voteCommentNum-1].comment_id)
 				
 				if downvoted:
 					print("\nDownvote successful :)")
 				else:
 					print("\nDownvote failed :(\t", end='')
+					print (posted.status_code, end='')
+					print (" ", end='')
+					print (requests.status_codes._codes[posted.status_code][0])
+					
+			else:
+				print ("You must load a list of yaks first by reading latest, top local, best, or user yaks.")
+				
+		# Report Comment	
+		elif choice[0].upper() == 'M':
+			# If yaks not loaded, tell user to load one of the options
+			if len(currentlist) > 0:
+				parameters = choice.split()
+				
+				if len(parameters) == 3:
+					yakNum = int(parameters[1])
+					reportCommentNum = int(parameters[2])
+				elif len(parameters) == 2:
+					yakNum = int(parameters[1])
+					reportCommentNum = int(input("Enter comment number to report (displayed above each one): "))
+				else:
+					yakNum = int(input("Enter yak number (displayed above each one): "))
+					reportCommentNum = int(input("Enter comment number to report (displayed above each one): "))
+				
+				reported = remoteyakker.report_comment(currentlist[yakNum-1].get_comments()[reportCommentNum-1].comment_id)
+				
+				if reported:
+					print("\nReport successful :)")
+				else:
+					print("\nReport failed :(\t", end='')
 					print (posted.status_code, end='')
 					print (" ", end='')
 					print (requests.status_codes._codes[posted.status_code][0])
