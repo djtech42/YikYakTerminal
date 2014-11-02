@@ -173,6 +173,4 @@ This software utilizes PyGeoCoder to convert addresses to coordinates (licensed 
 
 API url was http://github.com/joseph346/pyak/, but the repo seems to be deleted now.
 
-Radiati0n has a version of it at http://github.com/Radiati0n/pyak. 
-
 I modified the original to create specific output for this app.
