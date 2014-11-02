@@ -70,7 +70,7 @@ Actions are performed using a single letter and optional parameter(s).
     
     *Contact Yik Yak			(F)
     
-    *Quit App			    (Q)
+    *Quit App			    	(Q)
     
     ->
     
