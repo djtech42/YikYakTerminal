@@ -7,6 +7,7 @@ import datetime
 import urllib
 import os
 import uuid
+import re
 
 from hashlib import sha1
 from hashlib import md5
@@ -84,9 +85,15 @@ class Comment:
 			elif self.liked < 0:
 				my_action = "v "
 			print ("\t\t%s(%s) %s \n\n\t\tPosted  %s" % (my_action, self.likes, self.comment, self.time))
-		# Quick fix for emoji crash
+		# Fix for emoji crash: filter emoji if not supported
 		except UnicodeEncodeError:
-			print("Couldn't display comment because it contains an emoji character.")
+			self.comment = re.sub('[^\x00-\x7F]', '',self.comment)
+			my_action = ""
+			if self.liked > 0:
+				my_action = "^ "
+			elif self.liked < 0:
+				my_action = "v "
+			print ("\t\t%s(%s) %s \n\n\t\tPosted  %s" % (my_action, self.likes, self.comment, self.time))
 
 class Yak:
 	def __init__(self, raw, client):
@@ -163,9 +170,20 @@ class Yak:
 			elif self.liked < 0:
 				my_action = "v "
 			print ("\n\t%s%s likes  |  Posted  %s  at  %s %s" % (my_action, self.likes, self.time, self.latitude, self.longitude))
-		# Quick fix for emoji crash
+		# Fix for emoji crash: filter emoji if not supported
 		except UnicodeEncodeError:
-			print("Couldn't display yak because it contains an emoji character.")
+			self.message = re.sub('[^\x00-\x7F]', '',self.message)
+			if self.handle is not None:
+				print ("### %s ###" % self.handle)
+			print ()
+			print (self.message)
+			# Show arrow if yak is upvoted or downvoted
+			my_action = ""
+			if self.liked > 0:
+				my_action = "^ "
+			elif self.liked < 0:
+				my_action = "v "
+			print ("\n\t%s%s likes  |  Posted  %s  at  %s %s" % (my_action, self.likes, self.time, self.latitude, self.longitude))
 
 class Yakker:
 	base_url = "https://us-east-api.yikyakapi.net/api/"
