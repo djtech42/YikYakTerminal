@@ -4,7 +4,7 @@ Yik Yak Command Line Version (Version 2.1)
 Python implementation of Yik Yak using the pyak API by joseph346. More features to come in the future.
 
 --------------------------------------------------------------------------------------
-## Getting Started Guide for Users on OS X and Linux
+## Getting Started Guide for Users on OS X (Mac) and Linux
 
 - Click Download ZIP
 - Install Python 3 (latest version is 3.4.2): http://www.python.org/downloads/
