@@ -77,12 +77,16 @@ class Comment:
 		return self.client.post_comment(self.message_id, comment)
 
 	def print_comment(self):
-		my_action = ""
-		if self.liked > 0:
-			my_action = "^ "
-		elif self.liked < 0:
-			my_action = "v "
-		print ("\t\t%s(%s) %s \n\n\t\tPosted  %s" % (my_action, self.likes, self.comment, self.time))
+		try:
+			my_action = ""
+			if self.liked > 0:
+				my_action = "^ "
+			elif self.liked < 0:
+				my_action = "v "
+			print ("\t\t%s(%s) %s \n\n\t\tPosted  %s" % (my_action, self.likes, self.comment, self.time))
+		# Quick fix for emoji crash
+		except UnicodeEncodeError:
+			print("Couldn't display comment because it contains an emoji character.")
 
 class Yak:
 	def __init__(self, raw, client):
@@ -147,17 +151,21 @@ class Yak:
 		return self.client.get_comments(self.message_id)
 
 	def print_yak(self):
-		if self.handle is not None:
-			print ("### %s ###" % self.handle)
-		print ()
-		print (self.message)
-		# Show arrow if yak is upvoted or downvoted
-		my_action = ""
-		if self.liked > 0:
-			my_action = "^ "
-		elif self.liked < 0:
-			my_action = "v "
-		print ("\n\t%s%s likes  |  Posted  %s  at  %s %s" % (my_action, self.likes, self.time, self.latitude, self.longitude))
+		try:
+			if self.handle is not None:
+				print ("### %s ###" % self.handle)
+			print ()
+			print (self.message)
+			# Show arrow if yak is upvoted or downvoted
+			my_action = ""
+			if self.liked > 0:
+				my_action = "^ "
+			elif self.liked < 0:
+				my_action = "v "
+			print ("\n\t%s%s likes  |  Posted  %s  at  %s %s" % (my_action, self.likes, self.time, self.latitude, self.longitude))
+		# Quick fix for emoji crash
+		except UnicodeEncodeError:
+			print("Couldn't display yak because it contains an emoji character.")
 
 class Yakker:
 	base_url = "https://us-east-api.yikyakapi.net/api/"
