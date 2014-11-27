@@ -275,6 +275,7 @@ class Yakker:
 		headers = {
 			"User-Agent": self.user_agent,
 			"Accept-Encoding": "gzip",
+			"Cookie": "lat=" + self.location.latitude + "; long=" + self.location.longitude,
 		}
 		return requests.get(url, params=params, headers=headers)
 
@@ -287,6 +288,7 @@ class Yakker:
 		headers = {
 			"User-Agent": self.user_agent,
 			"Accept-Encoding": "gzip",
+			"Cookie": "lat=" + self.location.latitude + "; long=" + self.location.longitude,
 		}
 		return requests.post(url, data=params, params=getparams, headers=headers)
 
