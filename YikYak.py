@@ -168,7 +168,7 @@ def main():
 					posted = remoteyakker.post_comment(currentlist[yakNum-1].message_id, comment)
 					
 					if posted:
-						if len(remoteyakker.get_recent_replied()) > 0 and remoteyakker.get_recent_replied()[0].get_comments()[0] == comment:
+						if len(remoteyakker.get_recent_replied()) > 0 and remoteyakker.get_recent_replied()[0].get_comments()[:-1] == comment:
 							print("\nComment successful :)")
 						else:
 							print("\nComment failed :(\t", end='')
