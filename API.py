@@ -275,7 +275,7 @@ class Yakker:
 		headers = {
 			"User-Agent": self.user_agent,
 			"Accept-Encoding": "gzip",
-			"Cookie": "lat=" + self.location.latitude + "; long=" + self.location.longitude + "; pending=deleted; expires=Thu,01-Jan-1970 00:00:01 GMT;Max-Age=0",
+			#"Cookie": "lat=" + self.location.latitude + "; long=" + self.location.longitude + "; pending=deleted; expires=Thu,01-Jan-1970 00:00:01 GMT;Max-Age=0",
 		}
 		return requests.get(url, params=params, headers=headers)
 
@@ -288,7 +288,7 @@ class Yakker:
 		headers = {
 			"User-Agent": self.user_agent,
 			"Accept-Encoding": "gzip",
-			"Cookie": "lat=" + self.location.latitude + "; long=" + self.location.longitude + "; pending=deleted; expires=Thu,01-Jan-1970 00:00:01 GMT;Max-Age=0",
+			#"Cookie": "lat=" + self.location.latitude + "; long=" + self.location.longitude + "; pending=deleted; expires=Thu,01-Jan-1970 00:00:01 GMT;Max-Age=0",
 		}
 		return requests.post(url, data=params, params=getparams, headers=headers)
 
@@ -410,7 +410,9 @@ class Yakker:
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
 		}
-		return self.get_yak_list("getMyTops", params)
+		topuseryaks = self.get_yak_list("getMyTops", params)
+		topuseryaks.sort(key=lambda x: x.likes, reverse=True)
+		return topuseryaks
 
 	def get_recent_replied(self):
 		params = {
