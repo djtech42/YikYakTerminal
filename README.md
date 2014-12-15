@@ -3,6 +3,8 @@ Yik Yak Command Line Version (Version 2.1)
 
 Python implementation of Yik Yak using the pyak API by joseph346. More features to come in the future.
 
+# Note: New User IDs are not working anymore. It is not clear how Yik Yak is creating the new User IDs. Please try to find existing old IDs that still work to use all of the features.
+
 --------------------------------------------------------------------------------------
 ## Getting Started Guide for Users on OS X (Mac) and Linux
 
