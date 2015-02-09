@@ -187,7 +187,7 @@ class Yak:
 
 class Yakker:
 	base_url = "https://us-east-api.yikyakapi.net/api/"
-	user_agent = "Yik Yak/2.1.0.23 CFNetwork/711.1.12 Darwin/14.0.0"
+	user_agent = "Yik Yak/2.1.0.23 CFNetwork/711.1.12 Darwin/14.0.1"
 
 	def __init__(self, user_id=None, location=None, force_register=False):
 		if location is None:
