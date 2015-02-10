@@ -174,7 +174,7 @@ class Yak:
 		except UnicodeEncodeError:
 			self.message = re.sub('[^\x00-\x7F]', '',self.message)
 			if self.handle is not None:
-				print ("### %s ###" % self.handle)
+				print ("### %s ###" % self.handle.encode('utf-8').strip())
 			print ()
 			print (self.message)
 			# Show arrow if yak is upvoted or downvoted
@@ -187,7 +187,7 @@ class Yak:
 
 class Yakker:
 	base_url = "https://us-east-api.yikyakapi.net/api/"
-	user_agent = "Yik Yak/2.1.0.23 CFNetwork/711.1.12 Darwin/14.0.1"
+	user_agent = "Dalvik/1.6.0 (Linux; U; Android 4.3; Samsung Galaxy S4 - 4.3 - API 18 - 1080x1920 Build/JLS36G)"
 
 	def __init__(self, user_id=None, location=None, force_register=False):
 		if location is None:
@@ -220,7 +220,7 @@ class Yakker:
 		return result
 
 	def sign_request(self, page, params):
-		key = "F7CAFA2F-FE67-4E03-A090-AC7FFF010729"
+		key = "EF64523D2BD1FA21F18F5BC654DFC41B"
 
 		#The salt is just the current time in seconds since epoch
 		salt = str(int(time.time()))
