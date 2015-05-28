@@ -5,7 +5,7 @@ import requests
 
 def main():
 	# Title text
-	print("\nYik Yak Command Line Edition : Created by djtech42\n\n")
+	print("\nYik Yak Command Line Edition (YikYakTerminal): Created by djtech42\n\n")
 	
 	# Initialize Google Geocoder API
 	geocoder = pygeocoder.Geocoder("AIzaSyAGeW6l17ATMZiNTRExwvfa2iuPA1DvJqM")
@@ -19,12 +19,18 @@ def main():
 		# Extract location coordinates and name from file
 		coords = fileinput.split('\n')
 		
-		currentlatitude = coords[0]
-		currentlongitude = coords[1]
-		print("Location is set to: ", coords[2])
+		currentlatitude = coords[0][len("Latitude: "):]
+		currentlongitude = coords[1][len("Longitude: "):]
+		
+		# New location parameters
+		currentaccuracy = coords[3][len("Accuracy: "):]
+		currentaltitude = coords[4][len("Altitude: "):]
+		
+		print("Location is set to: ", coords[2][len("Location Name: "):], " | Accuracy: ", currentaccuracy, " | Altitude: ", currentaltitude)
 		
 		# Set up coordinate object
-		coordlocation = pk.Location(currentlatitude, currentlongitude)
+		# location must now set accuracy (1) and altitude (1)
+		coordlocation = pk.Location(currentlatitude, currentlongitude, currentaccuracy, currentaltitude)
 		
 	except FileNotFoundError:
 		# If first time using app, ask for preferred location
@@ -36,9 +42,15 @@ def main():
 			
 			currentlatitude = input("Latitude: ")
 			currentlongitude = input("Longitude: ")
-			coordlocation = pk.Location(currentlatitude, currentlongitude)
-	
-	print()
+			currentaccuracy, currentaltitude = 1
+			currentaccuracy = input("Accuracy(Default:1): ")
+			currentaltitude = input("Altitude(Default:1): ")
+			# location must now set accuracy (1) and altitude (1)
+			coordlocation = pk.Location(currentlatitude, currentlongitude, currentaccuracy, currentaltitude)
+			
+	except:
+		print("Please delete the location file and run the app again to build a location file that matches the new format.")
+		quit()
 	
 	try:
 		# If user already has ID, read file
@@ -82,7 +94,7 @@ def main():
 			print()
 			
 			# Show all action choices
-			choice = input("*Read Latest Yaks\t\t(R)\n*Read Top Local Yaks\t\t(T)\n\n*Read Best Yaks of All Time\t(B)\n\n*Show User Yaks\t\t\t(S)\n*Show User Comments\t\t(O)\n\n*Show Top User Yaks\t\t(G)\n\n*Post Yak\t\t\t(P) or (P <message>)\n*Post Comment\t\t\t(C) or (C <yak#>)\n\n*Upvote Yak\t\t\t(U) or (U <yak#>)\n*Downvote Yak\t\t\t(D) or (D <yak#>)\n*Report Yak\t\t\t(E) or (E <yak#>)\n*Show Recent Yak Upvotes\t(A)\n\n*Upvote Comment\t\t\t(V) or (V <yak# comment#>)\n*Downvote Comment\t\t(H) or (H <yak# comment#>)\n*Report Comment\t\t\t(M) or (M <yak# comment#>)\n\n*Yakarma Level\t\t\t(Y)\n\n*Choose New User ID\t\t(I) or (I <userID>)\n*Choose New Location\t\t(L) or (L <location>)\n\n*Contact Yik Yak\t\t(F)\n\n*Quit App\t\t\t(Q)\n\n-> ")
+			choice = input("*Read Latest Yaks\t\t(R)\n*Read Top Local Yaks\t\t(T)\n\n*Read Best Yaks of All Time\t(B)\n\n*Show User Yaks\t\t\t(S)\n*Show User Comments\t\t(O)\n\n*Show Top User Yaks\t\t(G)\n\n*Post Yak\t\t\t(P) or (P <message>)\n*Post Comment\t\t\t(C) or (C <yak#>)\n\n*Upvote Yak\t\t\t(U) or (U <yak#>)\n*Downvote Yak\t\t\t(D) or (D <yak#>)\n*Report Yak\t\t\t(E) or (E <yak#>)\n*Show Recent Yak Upvotes\t(A)\n\n*Upvote Comment\t\t\t(V) or (V <yak# comment#>)\n*Downvote Comment\t\t(H) or (H <yak# comment#>)\n*Report Comment\t\t\t(M) or (M <yak# comment#>)\n\n*Yakarma Level\t\t\t(Y)\n\n*Choose New User ID\t\t(I) or (I <userID>)\n*Choose New Location\t\t(L) or (L <location>)\n\n*Quit App\t\t\t(Q)\n\n-> ")
 			
 			# Read Yaks
 			if choice.upper() == 'R':
@@ -371,18 +383,18 @@ def main():
 				yaklist = remoteyakker.get_yaks()
 				currentlist = yaklist
 				
-			# Contact Yik Yak
-			elif choice.upper() == 'F':
-				message = input("Enter message to send to Yik Yak: ")
-				contacted = remoteyakker.contact(message)
-				if contacted:
-					print("\nYik Yak contacted successfully :)")
-				else:
-					print("\nFailed to contact Yik Yak :(\t", end='')
-					print (posted.status_code, end='')
-					print (" ", end='')
-					print (requests.status_codes._codes[posted.status_code][0])
-				
+			# # Contact Yik Yak (Outdated, not working)
+			# elif choice.upper() == 'F':
+			# 	message = input("Enter message to send to Yik Yak: ")
+			# 	contacted = remoteyakker.contact(message)
+			# 	if contacted:
+			# 		print("\nYik Yak contacted successfully :)")
+			# 	else:
+			# 		print("\nFailed to contact Yik Yak :(\t", end='')
+			# 		print (contacted.status_code, end='')
+			# 		print (" ", end='')
+			# 		print (requests.status_codes._codes[contacted.status_code][0])
+			# 	
 			# Quit App
 			elif choice.upper() == 'Q':
 				break;
@@ -399,14 +411,17 @@ def newLocation(geocoder, address=""):
 		
 	coordlocation = 0
 	try:
-		coordlocation = pk.Location(currentlocation.latitude, currentlocation.longitude)
+		# location must now set accuracy (1) and altitude (1)
+		coordlocation = pk.Location(currentlocation.latitude, currentlocation.longitude, 1, 1)
 		
 		# Create file if it does not exist and write
 		f = open("locationsetting", 'w+')
-		coordoutput = str(currentlocation.latitude) + '\n' + str(currentlocation.longitude)
+		coordoutput = "Latitude: " + str(currentlocation.latitude) + "\nLongitude: " + str(currentlocation.longitude)
 		f.write(coordoutput)
-		f.write("\n")
+		f.write("\nLocation Name: ")
 		f.write(address)
+		# write accuracy and altitude
+		f.write("\nAccuracy: 1\nAltitude: 1")
 		f.close()
 	except:
 		print("Unable to get location.")
@@ -442,7 +457,11 @@ def changeLocation(geocoder, address=""):
 		print("\nPlease enter coordinates manually: ")
 		currentlatitude = input("Latitude: ")
 		currentlongitude = input("Longitude: ")
-		coordlocation = pk.Location(currentlatitude, currentlongitude)
+		currentaccuracy, currentaltitude = 1
+		currentaccuracy = input("Accuracy(Default:1): ")
+		currentaltitude = input("Altitude(Default:1): ")
+		# location must now set accuracy (1) and altitude (1)
+		coordlocation = pk.Location(currentlatitude, currentlongitude, currentaccuracy, currentaltitude)
 		
 	return coordlocation
 	

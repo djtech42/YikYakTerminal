@@ -19,9 +19,14 @@ def parse_time(timestr):
 	).strftime('%Y-%m-%d %H:%M:%S')
 
 class Location:
-	def __init__(self, latitude, longitude, delta=None):
+	def __init__(self, latitude, longitude, accuracy=None, altitude=None, delta=None):
 		self.latitude = latitude
 		self.longitude = longitude
+		
+		# New parameters for update
+		self.accuracy = accuracy
+		self.altitude = altitude
+		
 		if delta is None:
 			delta = "0.030000"
 		self.delta = delta
@@ -117,6 +122,7 @@ class Yak:
 			self.type = raw["type"]
 			self.liked = int(raw["liked"])
 			self.reyaked = raw["reyaked"]
+			self.readonly = raw["readonly"]
 		except KeyError:
 			pass
 
@@ -201,7 +207,7 @@ class Yakker:
 			self.register_id_new(user_id)
 
 		self.id = user_id
-
+		self.version = "2.3.3.1e"
 		self.handle = None
 
 		#self.update_stats()
@@ -213,8 +219,15 @@ class Yakker:
 	def register_id_new(self, id):
 		params = {
 			"userID": id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"version": self.version
+			
 		}
 		result = self.get("registerUser", params)
 		return result
@@ -279,7 +292,7 @@ class Yakker:
 		}
 		return requests.get(url, params=params, headers=headers)
 
-	def post(self, page, params):
+	def post(self, page, params, post_data):
 		url = self.base_url + page
 
 		hash, salt = self.post_sign_request(page, params)
@@ -316,9 +329,11 @@ class Yakker:
 		return comments
 
 	def contact(self, message):
+		# outdated, might not work
 		params = {
 			"userID": self.id,
 			"message": message,
+			"version": self.version,
 		}
 		return self.get("contactUs", params)
 
@@ -326,8 +341,15 @@ class Yakker:
 		params = {
 			"userID": self.id,
 			"messageID": message_id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get("likeMessage", params)
 
@@ -335,8 +357,15 @@ class Yakker:
 		params = {
 			"userID": self.id,
 			"messageID": message_id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get("downvoteMessage", params)
 
@@ -344,8 +373,15 @@ class Yakker:
 		params = {
 			"userID": self.id,
 			"commentID": comment_id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get("likeComment", params)
 
@@ -353,17 +389,32 @@ class Yakker:
 		params = {
 			"userID": self.id,
 			"commentID": comment_id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get("downvoteComment", params)
 
-	def report_yak(self, message_id):
+	def report_yak(self, message_id, reason):
 		params = params = {
 			"userID": self.id,
 			"messageID": message_id,
+			
+			# updated parameters for new version
+			"reason": reason,
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get("reportMessage", params)
 
@@ -371,18 +422,33 @@ class Yakker:
 		params = params = {
 			"userID": self.id,
 			"messageID": message_id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get("deleteMessage2", params)
 
-	def report_comment(self, comment_id, message_id):
+	def report_comment(self, comment_id, message_id, reason):
 		params = {
 			"userID": self.id,
 			"commentID": comment_id,
 			"messageID": message_id,
+			
+			# updated parameters for new version
+			"reason": reason,
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get("reportMessage", params)
 
@@ -391,24 +457,45 @@ class Yakker:
 			"userID": self.id,
 			"commentID": comment_id,
 			"messageID": message_id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get("deleteComment", params)
 
 	def get_greatest(self):
 		params = {
 			"userID": self.id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get_yak_list("getGreatest", params)
 
 	def get_my_tops(self):
 		params = {
 			"userID": self.id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		topuseryaks = self.get_yak_list("getMyTops", params)
 		topuseryaks.sort(key=lambda x: x.likes, reverse=True)
@@ -417,8 +504,15 @@ class Yakker:
 	def get_recent_replied(self):
 		params = {
 			"userID": self.id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get_yak_list("getMyRecentReplies", params)
 
@@ -428,16 +522,30 @@ class Yakker:
 	def get_my_recent_yaks(self):
 		params = {
 			"userID": self.id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get_yak_list("getMyRecentYaks", params)
 
 	def get_area_tops(self):
 		params = {
 			"userID": self.id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		toplist = self.get_yak_list("getAreaTops", params)
 		toplist.sort(key=lambda x: x.likes, reverse=True)
@@ -446,43 +554,82 @@ class Yakker:
 	def get_yaks(self):
 		params = {
 			"userID": self.id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 		return self.get_yak_list("getMessages", params)
 
-	def post_yak(self, message, showloc=False, handle=False):
+	def post_yak(self, message, showloc=False, handle=False, bypassedThreatCheck=False):
 		params = {
+			"userID": self.id,
+			
+			# updated parameters for new version
+			"userLat": self.location.latitude,
+			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
+		}
+		
+		# new required data for posting
+		post_data = {
+			"bypassedThreatPopup": bypassedThreatCheck,
 			"userID": self.id,
 			"lat": self.location.latitude,
 			"long": self.location.longitude,
-			"message": message,
+			"message": message
 		}
-		if not showloc:
-			params["hidePin"] = "1"
+		
 		if handle and (self.handle is not None):
 			params["hndl"] = self.handle
-		return self.post("sendMessage", params)
+		return self.post("sendMessage", params, post_data)
 
 	def get_comments(self, message_id):
 		params = {
 			"userID": self.id,
 			"messageID": message_id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"version": self.version,
 		}
 
 		return self.parse_comments(self.get("getComments", params).text, message_id)
 
-	def post_comment(self, message_id, comment):
+	def post_comment(self, message_id, comment, bypassedThreatCheck=False):
 		params = {
+			"userID": self.id,
+			
+			# updated parameters for new version
+			"userLat": self.location.latitude,
+			"userLong": self.location.longitude,
+			"accuracy": self.location.accuracy,
+			"version": self.version
+		}
+		
+		# new required data for posting
+		post_data = {
+			"bypassedThreatPopup": bypassedThreatCheck,
 			"userID": self.id,
 			"messageID": message_id,
 			"comment": comment,
 			"lat": self.location.latitude,
-			"long": self.location.longitude,
+			"long": self.location.longitude
 		}
-		return self.post("postComment", params)
+		
+		return self.post("postComment", params, post_data)
 
 	def get_peek_locations(self):
 		params = {
@@ -523,18 +670,29 @@ class Yakker:
 
 		params = {
 			"userID": self.id,
+			
+			# updated parameters for new version
+			"lat": self.location.latitude,
+			"long": self.location.longitude,
 			"userLat": self.location.latitude,
 			"userLong": self.location.longitude,
-			'peekID': peek_id,
+			"accuracy": self.location.accuracy,
+			"altitude": self.location.altitude,
+			"peekID": peek_id,
+			"version": self.version,
 		}
 		return self.get_yak_list("getPeekMessages", params)
 		
 	def peekLoc(self, location):
 		params = {
+				# updated parameters for new version
 				"lat": location.latitude,
 				"long": location.longitude,
 				"userID": self.id,
 				"userLat": self.location.latitude,
 				"userLong": self.location.longitude,
+				"accuracy": self.location.accuracy,
+				"altitude": self.location.altitude,
+				"version": self.version,
 		}
 		return self.get_yak_list("yaks", params)
